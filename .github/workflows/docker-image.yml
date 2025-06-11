@@ -16,12 +16,12 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.HOST }}                # Your droplet's IP address or hostname
-          username: ${{ secrets.USERNAME }}        # Your SSH username
-          key: ${{ secrets.SSH_PRIVATE_KEY }}      # Your SSH private key
+          host: 104.248.42.192                # Manually set the host IP address
+          username: ${{ secrets.USERNAME }}   # Your SSH username
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Your SSH private key
           passphrase: ${{ secrets.SSH_PASSPHRASE }} # Optional: passphrase for the SSH key
           script: |
             cd ~/challenge
-            git pull origin main                     # Pull the latest changes from the main branch
-            docker compose down                      # Stop and remove existing containers
-            docker compose up --build -d            # Build and start containers in detached mode
+            git pull origin main                # Pull the latest changes from the main branch
+            docker compose down                 # Stop and remove existing containers
+            docker compose up --build -d       # Build and start containers in detached mode
