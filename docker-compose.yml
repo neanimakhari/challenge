@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./express_api
+      dockerfile: Dockerfile
+    ports:
+      - "3007:3007"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./express_api/database.sqlite:/app/database.sqlite
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./user_task_manager/user-task-manager
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge 
