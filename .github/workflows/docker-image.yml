@@ -1,0 +1,27 @@
+name: Deploy to Droplet
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}                # Your droplet's IP address or hostname
+          username: ${{ secrets.USERNAME }}        # Your SSH username
+          key: ${{ secrets.SSH_PRIVATE_KEY }}      # Your SSH private key
+          passphrase: ${{ secrets.SSH_PASSPHRASE }} # Optional: passphrase for the SSH key
+          script: |
+            cd ~/challenge
+            git pull origin main                     # Pull the latest changes from the main branch
+            docker compose down                      # Stop and remove existing containers
+            docker compose up --build -d            # Build and start containers in detached mode
